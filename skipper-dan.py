@@ -20,7 +20,7 @@ f=open(filename, 'rb') #opens the file as a binary
 
 with open(filename, "rb") as binary_file: #maybe redundant?
     file_size = os.path.getsize(filename) #gets the filesize
-    if (file_size % 2) == 0: #if file size is divisible by two
+    if (file_size % 4) == 0: #if file size is divisible by four
         divisible=1
     else:
         divisible=0
