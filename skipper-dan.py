@@ -7,12 +7,12 @@ byte2=0
 byte3=0
 byte4=0
 byte5=0
-
+divisiblebyfour=0
 xdifference=0
 ydifference=0
 
 loop=0
-
+loops=0
 hypotlist=[] #sets the list to zero, hard reset
 
 filename = input('file: ') #runs the user prompt for selecting the file
@@ -21,9 +21,9 @@ f=open(filename, 'rb') #opens the file as a binary
 with open(filename, "rb") as binary_file: #maybe redundant?
     file_size = os.path.getsize(filename) #gets the filesize
     if (file_size % 4) == 0: #if file size is divisible by four
-        divisible=1
+        divisiblebyfour=1
     else:
-        divisible=0
+        divisiblebyfour=1
     f.seek(file_size-1)
     fff=(f.read(1))
     #print((int.from_bytes(fff, byteorder=sys.byteorder))) #reads the last byte
@@ -71,8 +71,10 @@ with open(filename, "rb") as binary_file: #maybe redundant?
 
         loop += 1
 
-        distance=(max(hypotlist))
-        
+distance=(max(hypotlist))
+
+
+
 print(hypotlist)
 print(distance)
 #print(file_size)
