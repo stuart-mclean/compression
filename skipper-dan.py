@@ -1,56 +1,80 @@
-import os #used for getting the filesize
+import os
 import sys #used for converting the byte to decimal
-i = 0 #the variable used to reset the list
-j = 0 #the variable used to write the data to the list
-thislist = [] #sets the list to zero, hard reset
-#read file
+
+byte0=0
+byte1=0
+byte2=0
+byte3=0
+byte4=0
+byte5=0
+
+xdifference=0
+ydifference=0
+
+loop=0
+
+hypotlist=[] #sets the list to zero, hard reset
+
 filename = input('file: ') #runs the user prompt for selecting the file
 f=open(filename, 'rb') #opens the file as a binary
-#get file size
+
 with open(filename, "rb") as binary_file: #maybe redundant?
     file_size = os.path.getsize(filename) #gets the filesize
-print(file_size) #write the filesize for verification and fun
-print(filename) #prints the name for the file, just for clarity
-#establishes list
+    if (file_size % 2) == 0: #if file size is divisible by two
+        divisible=1
+    else:
+        divisible=0
+    f.seek(file_size-1)
+    fff=(f.read(1))
+    #print((int.from_bytes(fff, byteorder=sys.byteorder))) #reads the last byte
+    f.seek(0)
+    ggg=(f.read(1))
+    #print((int.from_bytes(ggg, byteorder=sys.byteorder))) #reads the first byte
+    if ((int.from_bytes(ggg, byteorder=sys.byteorder))) == (int.from_bytes(fff, byteorder=sys.byteorder)): #if last byte is the same as the first byte
+        loops=1
+    else:
+        loops=0
+    f.seek(0)
 
-while j < 256: #255 didn't work and 256 did.
-    thislist.append(00) #fills the list with 256 blank zeroes
-    j += 1 #repeat until 256 times repeated
-#print(thislist)#gets the filesize
-#establishes list
-dumpfile = open(r"dump.txt", "w") #opens the dump file as write-only
-dumpfile.write("") #write nothing
-dumpfile.close() #close the file
 
-while j < 256: #255 didn't work and 256 did.
-    thislist.append(00) #fills the list with 256 blank zeroes
-    j += 1 #repeat until 256 times repeated
-#print(thislist)
-dumpfile = open(r"dump.txt", "a")
-with open(filename, "rb") as binary_file:
-    contents = binary_file.read()
-    while i < file_size: #the earlier established number of bytes does this repeat
-    #take the current byte:
-        piece = f.read(1) #read one byte
-        locator=(int.from_bytes(piece, byteorder=sys.byteorder)) #figure out what this actually does, converts the raw byte to decimal
-        #print(locator)
-        thislist[locator] = thislist[locator] + 1 #add 1 to the corresponding tally on the list
-        dumpfile.write(str(locator))
-        dumpfile.write(" ")
-        if i == (round(file_size*0.2)): #this is repeating, please fix this
-            print("20% finished")
-        if i == (round(file_size*0.4)):
-            print("40% finished")
-        if i == (round(file_size*0.6)):
-            print("60% finished")
-        if i == (round(file_size*0.8)):
-            print("80% finished")
-        i += 1 #repeat until finished
-print(thislist) #outputs all the tallies
-print("Most frquent decimal appears", max(thislist), "times.") #human-readable printing of the most frequent byte
-dumpfile.close()
-f.close()
+    while loop <= (file_size/6):
+        piece = f.read(1)
+        byte0=(int.from_bytes(piece, byteorder=sys.byteorder))
+        #print(byte0)
+        piece = f.read(1)
+        byte1=(int.from_bytes(piece, byteorder=sys.byteorder))
+        #print(byte1)
+        piece = f.read(1)
+        byte2=(int.from_bytes(piece, byteorder=sys.byteorder))
+        #print(byte2)
+        piece = f.read(1)
+        byte3=(int.from_bytes(piece, byteorder=sys.byteorder))
+        #print(byte3)
 
-#verify file size
-#
-#
+        legnth=((((byte3-byte1)**2)+((byte2-byte0)**2))**0.5)
+        #print(legnth)
+        hypotlist.append(legnth)
+
+        byte0=byte2
+        byte1=byte3
+
+        piece = f.read(1)
+        byte2=(int.from_bytes(piece, byteorder=sys.byteorder))
+        #print(byte2)
+        piece = f.read(1)
+        byte3=(int.from_bytes(piece, byteorder=sys.byteorder))
+        #print(byte3)
+
+        legnth=((((byte3-byte1)**2)+((byte2-byte0)**2))**0.5)
+        #print(legnth)
+        hypotlist.append(legnth)
+
+        loop += 1
+
+        distance=(max(hypotlist))
+        
+print(hypotlist)
+print(distance)
+#print(file_size)
+#print(divisible)
+#print(loops)
